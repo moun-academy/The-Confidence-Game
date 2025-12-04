@@ -2,829 +2,325 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blush Game Tracker</title>
+  <title>FUCK SHYNESS – BLUSH OR DIE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- PWA additions -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f172a">
-  <link rel="icon" href="icons/icon-192.png">
-
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #111827;
-      --accent: #f97316;
-      --accent-soft: rgba(249,115,22,0.12);
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --danger: #ef4444;
-      --success: #22c55e;
-      --border: #1f2933;
-      --radius-lg: 18px;
-      --radius-md: 12px;
+      --bg: #0a0000;
+      --card: #0f0000;
+      --blood: #ff1a1a;
+      --fire: #ff4d00;
+      --gold: #ffaa00;
+      --text: #ffffff;
+      --muted: #ff6b6b;
+      --dark: #1a0000;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: radial-gradient(circle at top, #1e293b, #020617);
+      background: linear-gradient(135deg, #000000, #1a0000);
       color: var(--text);
       min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       display: flex;
       justify-content: center;
-      padding: 16px;
+      padding: 10px;
     }
-
-    .app {
-      width: 100%;
-      max-width: 480px;
-      margin: 16px auto;
-    }
-
+    .app { max-width: 480px; width:100%; margin:auto; }
     .card {
-      background: rgba(15,23,42,0.9);
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148,163,184,0.15);
-      padding: 18px 18px 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-      backdrop-filter: blur(20px);
+      background: var(--card);
+      border: 2px solid var(--blood);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.8);
     }
-
-    .header {
-      margin-bottom: 12px;
-    }
-
-    .title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
     h1 {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .tagline {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .pill {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(249,115,22,0.3);
-      color: var(--accent);
-      background: rgba(249,115,22,0.08);
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .belief-card {
-      margin-bottom: 16px;
-      padding: 10px 12px;
-      border-radius: var(--radius-md);
-      background: radial-gradient(circle at top left, rgba(249,115,22,0.18), rgba(15,23,42,0.96));
-      border: 1px solid rgba(249,115,22,0.35);
-    }
-
-    .belief-label {
-      font-size: 11px;
+      font-size: 28px;
+      text-align: center;
+      color: #ffffff;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
+      letter-spacing: 2px;
       margin-bottom: 4px;
     }
+    .tagline {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .pill {
+      display: inline-block;
+      background: var(--blood);
+      color: #000;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      margin: 0 auto;
+      display: block;
+      width: fit-content;
+    }
 
-    .belief-text {
-      font-size: 12px;
-      line-height: 1.4;
+    /* Clean, readable, but still brutal belief card */
+    .belief-card {
+      background: var(--dark);
+      border: 1px solid var(--blood);
+      padding: 18px;
+      border-radius: 16px;
+      margin: 20px 0;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #ff9999;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(255,26,26,0.15);
     }
 
     .today-summary {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 20px 0;
     }
-
-    .stat-card {
-      background: radial-gradient(circle at top left, rgba(249,115,22,0.28), rgba(15,23,42,0.9));
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-      border: 1px solid rgba(249,115,22,0.3);
+    .stat-card, .goal-card {
+      background: var(--dark);
+      border: 1px solid #660000;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
     }
-
     .stat-label {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--muted);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
-
-    .stat-main {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
     .stat-value {
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 52px;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
     }
-
-    .stat-sub {
-      font-size: 11px;
-      color: var(--muted);
-      text-align: right;
-    }
-
-    .goal-card {
-      background: rgba(15,23,42,0.9);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-      border: 1px solid rgba(148,163,184,0.25);
-    }
-
     .progress-bar {
-      position: relative;
-      width: 100%;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
+      height: 12px;
+      background: #1a0000;
+      border-radius: 6px;
       overflow: hidden;
-      margin-top: 4px;
+      margin: 10px 0;
+      border: 1px solid #660000;
     }
-
     .progress-fill {
       height: 100%;
-      background: linear-gradient(to right, #fb923c, #f97316);
+      background: linear-gradient(to right, var(--fire), var(--blood));
       width: 0%;
-      transition: width 0.25s ease-out;
+      transition: width 0.5s ease-out;
     }
 
-    .goal-label {
-      font-size: 11px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
+    textarea {
+      width: 100%;
+      background: var(--dark);
+      border: 1px solid #660000;
+      color: #fff;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      margin: 16px 0;
+      resize: vertical;
     }
-
-    .goal-label strong {
-      color: #e5e7eb;
-    }
-
-    .section-title {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin: 6px 2px 8px;
-    }
-
-    .buttons-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    @media (min-width: 480px) {
-      .buttons-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+    textarea::placeholder { color: #993333; }
 
     button {
       cursor: pointer;
       border: none;
-      border-radius: 999px;
-      padding: 10px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
+      border-radius: 16px;
+      padding: 18px;
+      font-size: 15px;
+      font-weight: 800;
       text-transform: uppercase;
-      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, background 0.15s ease-out;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 64px;
-      line-height: 1.25;
+      letter-spacing: 1px;
+      min-height: 90px;
+      transition: all 0.2s;
     }
+    button:active { transform: scale(0.97); }
 
-    button:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: none;
-    }
-
-    .btn-action {
-      background: rgba(15,23,42,0.95);
-      border: 1px solid rgba(148,163,184,0.7);
-      color: #e5e7eb;
-      box-shadow: 0 6px 18px rgba(15,23,42,0.8);
-    }
-
-    .btn-blush {
-      background: radial-gradient(circle at top left, rgba(251,113,133,0.25), rgba(15,23,42,0.96));
-      border: 1px solid rgba(251,113,133,0.6);
-      color: #fecaca;
-      box-shadow: 0 6px 18px rgba(248,113,113,0.45);
-    }
-
-    .btn-jackpot {
-      background: linear-gradient(135deg, #f97316, #ea580c);
-      color: #fef9c3;
-      box-shadow: 0 10px 26px rgba(249,115,22,0.55);
-    }
-
-    .btn-label {
-      font-size: 11px;
-      text-transform: none;
-      letter-spacing: 0;
-      opacity: 0.9;
-    }
+    .btn-action   { background: #222; border: 2px solid #666; color: #fff; }
+    .btn-blush    { background: #990000; color: #ff9999; border: 2px solid var(--blood); }
+    .btn-jackpot  { background: var(--gold); color: #000; border: 2px solid #ffaa00; }
 
     .btn-points {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      opacity: 0.9;
-    }
-
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 8px;
-      line-height: 1.4;
-    }
-
-    .hint strong {
-      color: #e5e7eb;
-    }
-
-    .notes-input {
-      width: 100%;
-      margin-top: 4px;
-      margin-bottom: 10px;
-    }
-
-    .notes-input textarea {
-      width: 100%;
-      resize: vertical;
-      min-height: 40px;
-      max-height: 120px;
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: rgba(15,23,42,0.95);
-      color: var(--text);
-      padding: 6px 8px;
-      font-size: 12px;
-      outline: none;
-    }
-
-    .notes-input textarea::placeholder {
-      color: rgba(148,163,184,0.7);
-    }
-
-    .notes-input textarea:focus {
-      border-color: rgba(249,115,22,0.7);
-      box-shadow: 0 0 0 1px rgba(249,115,22,0.4);
+      font-size: 20px;
+      font-weight: 900;
+      display: block;
+      margin-bottom: 4px;
     }
 
     .today-list {
-      margin-bottom: 10px;
-      background: rgba(15,23,42,0.9);
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(31,41,55,0.9);
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .event-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 8px 10px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      font-size: 12px;
-    }
-
-    .event-row:last-child {
-      border-bottom: none;
-    }
-
-    .event-main {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .event-type {
-      font-weight: 600;
-    }
-
-    .event-note {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .event-meta {
-      text-align: right;
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-      margin-left: 8px;
-    }
-
-    .event-points {
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .empty-state {
-      font-size: 11px;
-      color: var(--muted);
+      background: var(--dark);
+      border: 1px solid #660000;
+      border-radius: 14px;
       padding: 10px;
-      text-align: center;
+      max-height: 260px;
+      overflow-y: auto;
+      margin-top: 20px;
     }
-
-    .history {
-      background: rgba(15,23,42,0.92);
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(31,41,55,0.85);
-      padding: 8px 10px;
-      font-size: 11px;
-    }
-
-    .history-row {
+    .event-row {
+      padding: 12px 8px;
+      border-bottom: 1px solid #330000;
       display: flex;
       justify-content: space-between;
-      padding: 3px 0;
+      font-size: 14px;
+      color: #ff9999;
     }
-
-    .history-date {
-      color: var(--muted);
-    }
-
-    .history-points {
-      font-weight: 600;
-      color: #e5e7eb;
-    }
-
-    .footer-row {
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      color: var(--muted);
-      opacity: 0.9;
-    }
-
-    .reset-link {
-      cursor: pointer;
-      text-decoration: underline;
-      text-decoration-style: dotted;
-    }
-
-    .reset-link:hover {
-      color: #fca5a5;
-    }
+    .event-row:last-child { border-bottom: none; }
+    .event-points { color: var(--gold); font-weight: 900; }
 
     .status {
-      font-size: 11px;
-      margin-bottom: 4px;
-      color: var(--muted);
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+      margin: 16px 0;
+      line-height: 1.4;
     }
-
-    .status strong {
-      color: #e5e7eb;
-    }
-
-    .status.under {
-      color: var(--muted);
-    }
-
-    .status.met {
-      color: var(--success);
-    }
-
-    .status.over {
-      color: #fbbf24;
-    }
+    .status.met { color: #00ff00; }
+    .status.over { color: #ffff00; }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="card">
-      <header class="header">
-        <div class="title-row">
-          <div>
-            <h1>Blush Game Tracker</h1>
-            <p class="tagline">Turn every blush into power and pleasure.</p>
-          </div>
-          <div class="pill">I act in 5 seconds</div>
-        </div>
-      </header>
+      <h1>FUCK SHYNESS</h1>
+      <p class="tagline">Blush or stay a coward forever</p>
+      <div class="pill">5-second rule or die</div>
 
-      <!-- Rotating belief card -->
-      <section class="belief-card">
-        <div class="belief-label">Truth reminder</div>
-        <div class="belief-text" id="beliefText">
-          Blushing feels like standing completely exposed, stripped of all defenses, and that raw openness gives me a deep, intoxicating rush of freedom.
-        </div>
-      </section>
+      <div class="belief-card" id="beliefText">
+        Blushing hits like getting caught buck-naked — heart slamming, skin on fire — and that exact moment of total exposure is the most addictive, liberating high I’ve ever felt.
+      </div>
 
-      <section class="today-summary">
+      <div class="today-summary">
         <div class="stat-card">
           <div class="stat-label">Today</div>
-          <div class="stat-main">
-            <div class="stat-value" id="todayPoints">0</div>
-            <div class="stat-sub">
-              <div id="todayStatusLabel">Points collected</div>
-              <div id="todayCountLabel">0 reps</div>
-            </div>
-          </div>
+          <div class="stat-value" id="todayPoints">0</div>
         </div>
         <div class="goal-card">
-          <div class="stat-label">Daily Goal</div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-          <div class="goal-label">
-            <span><strong id="goalPointsLabel">10</strong> pts goal</span>
-            <span id="remainingLabel">10 pts left</span>
-          </div>
+          <div class="stat-label">War Goal</div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div style="margin-top:8px; color:#ff6b6b;">10 pts = you showed up</div>
         </div>
-      </section>
+      </div>
 
-      <section>
-        <div class="section-title">Log a rep</div>
-        <p class="hint">
-          See a social challenge, apply the 5 second rule, then tap the button that matches how you handled the blush and your response.
-        </p>
+      <textarea id="noteInput" placeholder="What the hell did you do?"></textarea>
 
-        <div class="notes-input">
-          <textarea id="noteInput" placeholder="Optional: what did you do or say? (Example: asked hostel roommate where he is from)"></textarea>
+      <div style="display:grid; gap:12px;">
+        <button class="btn-action" data-type="action">
+          <div class="btn-points">+1</div>
+          <div>I acted before the bitch voice won</div>
+        </button>
+
+        <button class="btn-blush" data-type="blush">
+          <div class="btn-points">+5</div>
+          <div>I blushed hard<br>and still raised my head</div>
+        </button>
+
+        <button class="btn-jackpot" data-type="jackpot">
+          <div class="btn-points">JACKPOT +10</div>
+          <div>I laughed at it:<br>“Yeah I’m shy — what now?”</div>
+        </button>
+      </div>
+
+      <div class="status under" id="todayStatusText">
+        <strong>0 points = you’re still a prisoner.<br>Go make yourself burn right now.</strong>
+      </div>
+
+      <div class="today-list" id="todayList">
+        <div style="text-align:center; padding:30px; color:#993333; font-size:15px;">
+          No kills today.<br>First one is the hardest — and the one that changes everything.
         </div>
-
-        <div class="buttons-grid">
-          <button class="btn-action" data-type="action">
-            <span class="btn-points">+1 POINT</span>
-            <span class="btn-label">I acted before overthinking.</span>
-          </button>
-          <button class="btn-blush" data-type="blush">
-            <span class="btn-points">+5 POINTS</span>
-            <span class="btn-label">I blushed and still raised my head.</span>
-          </button>
-          <button class="btn-jackpot" data-type="jackpot">
-            <span class="btn-points">JACKPOT +10</span>
-            <span class="btn-label">I laughed and said “Yes I am shy, what to do.”</span>
-          </button>
-        </div>
-      </section>
-
-      <section style="margin-top: 10px;">
-        <div class="section-title">Today’s reps</div>
-        <p id="todayStatusText" class="status under">
-          <strong>Move toward 10 points.</strong> Every rep is a vote for your new identity.
-        </p>
-        <div class="today-list" id="todayList">
-          <div class="empty-state">No reps logged yet today. First rep is the hardest and the most important.</div>
-        </div>
-      </section>
-
-      <section style="margin-top: 10px;">
-        <div class="section-title">Last 7 days</div>
-        <div class="history" id="historyList">
-          <div class="history-row">
-            <span class="history-date">No reps logged yet.</span>
-            <span class="history-points">0 pts</span>
-          </div>
-        </div>
-      </section>
-
-      <div class="footer-row">
-        <span>Stored on this device only.</span>
-        <span class="reset-link" id="resetButton">Reset all data</span>
       </div>
     </div>
   </div>
 
   <script>
-    // Configuration
     const DAILY_GOAL = 10;
+    const POINTS = { action: 1, blush: 5, jackpot: 10 };
+    const LABELS = { action: "Acted fast", blush: "Blushed + Owned", jackpot: "JACKPOT" };
 
-    const POINTS = {
-      action: 1,
-      blush: 5,
-      jackpot: 10
-    };
-
-    const LABELS = {
-      action: "Action in 5 seconds",
-      blush: "Blush + head up",
-      jackpot: "Jackpot: laugh and own it"
-    };
-
-    // Rotating belief statements
     const BELIEFS = [
-      "Blushing feels like standing completely exposed, stripped of all defenses, and that raw openness gives me a deep, intoxicating rush of freedom.",
-      "If I rise after the blush, people feel strength. If I hide, I punish myself with the pain of shrinking.",
-      "The real pleasure is in facing the heat and owning it, because that is the moment I become more alive.",
-      "Avoiding a blush kills my potential for people who will forget me, rising through it builds the man I respect.",
-      "The blush lasts seconds, but the pride of stepping in lasts all day, and the regret of avoiding it lasts even longer."
+      "Blushing hits like getting caught buck-naked — heart slamming, skin on fire — and that exact moment of total exposure is the most addictive, liberating high I’ve ever felt.",
+      "Stand tall through the blush = people smell blood and respect the killer. Hide = you castrate yourself in public.",
+      "The real orgasm is staring the heat dead in the eyes and growling “Come harder.” That second is when I become violently alive.",
+      "Dodging the blush = I murder tomorrow’s me for an audience that forgets me in 5 minutes. Eating it = I forge the man I respect.",
+      "The blush lasts 论证10 seconds. The pride of stepping in burns all day. The regret of pussing out rots in my soul forever."
     ];
 
     let beliefIndex = 0;
-    let beliefInterval = null;
-
-    function rotateBelief(nextImmediate = false) {
-      const beliefTextEl = document.getElementById("beliefText");
-      if (!beliefTextEl) return;
-
-      if (nextImmediate) {
-        beliefIndex = (beliefIndex + 1) % BELIEFS.length;
-      }
-
-      beliefTextEl.textContent = BELIEFS[beliefIndex];
-
-      // Prepare next index
+    function rotateBelief() {
+      document.getElementById("beliefText").textContent = BELIEFS[beliefIndex];
       beliefIndex = (beliefIndex + 1) % BELIEFS.length;
     }
+    setInterval(rotateBelief, 13000);
+    rotateBelief();
 
-    function startBeliefRotation() {
-      rotateBelief(false);
-      if (beliefInterval) clearInterval(beliefInterval);
-      beliefInterval = setInterval(() => rotateBelief(false), 15000);
-    }
-
-    // Utility functions
-    function getTodayKey() {
-      return new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    }
-
-    function loadEvents() {
-      try {
-        const raw = localStorage.getItem("shynessGameEvents");
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        console.error("Failed to parse events", e);
-        return [];
-      }
-    }
-
-    function saveEvents(events) {
-      localStorage.setItem("shynessGameEvents", JSON.stringify(events));
-    }
+    function getTodayKey() { return new Date().toISOString().slice(0,10); }
+    function loadEvents() { try { return JSON.parse(localStorage.getItem("shynessGameEvents")||"[]"); } catch(e) { return []; } }
+    function saveEvents(e) { localStorage.setItem("shynessGameEvents", JSON.stringify(e)); }
 
     function addEvent(type, note) {
       const events = loadEvents();
       const now = new Date();
-      events.push({
-        id: now.getTime(),
-        date: now.toISOString().slice(0, 10),
-        time: now.toTimeString().slice(0, 5),
-        type,
-        points: POINTS[type] || 0,
-        note: note || ""
-      });
+      events.push({ id: now.getTime(), date: getTodayKey(), time: now.toTimeString().slice(0,5), type, points: POINTS[type], note: note||"" });
       saveEvents(events);
       renderAll();
-
-      // Each time you log a rep, show the next belief immediately
-      rotateBelief(true);
-    }
-
-    function getEventsForDate(dateKey) {
-      return loadEvents().filter(e => e.date === dateKey);
-    }
-
-    function getLastNDates(n) {
-      const dates = [];
-      const today = new Date(getTodayKey());
-      for (let i = 0; i < n; i++) {
-        const d = new Date(today);
-        d.setDate(today.getDate() - i);
-        dates.push(d.toISOString().slice(0, 10));
-      }
-      return dates;
-    }
-
-    // Rendering functions
-    function renderTodaySummary() {
-      const todayKey = getTodayKey();
-      const events = getEventsForDate(todayKey);
-      const total = events.reduce((sum, e) => sum + e.points, 0);
-      const count = events.length;
-
-      const todayPointsEl = document.getElementById("todayPoints");
-      const todayStatusLabelEl = document.getElementById("todayStatusLabel");
-      const todayCountLabelEl = document.getElementById("todayCountLabel");
-      const progressFillEl = document.getElementById("progressFill");
-      const goalPointsLabelEl = document.getElementById("goalPointsLabel");
-      const remainingLabelEl = document.getElementById("remainingLabel");
-      const statusTextEl = document.getElementById("todayStatusText");
-
-      todayPointsEl.textContent = total;
-      todayCountLabelEl.textContent = count + (count === 1 ? " rep" : " reps");
-      goalPointsLabelEl.textContent = DAILY_GOAL;
-
-      const ratio = Math.min(total / DAILY_GOAL, 1);
-      progressFillEl.style.width = (ratio * 100) + "%";
-
-      if (total === 0) {
-        remainingLabelEl.textContent = DAILY_GOAL + " pts left";
-        todayStatusLabelEl.textContent = "Points collected";
-        statusTextEl.className = "status under";
-        statusTextEl.innerHTML = "<strong>Move toward 10 points.</strong> Every rep is a vote for your new identity.";
-      } else if (total < DAILY_GOAL) {
-        const left = DAILY_GOAL - total;
-        remainingLabelEl.textContent = left + " pts left";
-        todayStatusLabelEl.textContent = "You are warming up";
-        statusTextEl.className = "status under";
-        statusTextEl.innerHTML = "<strong>Good.</strong> You started. Keep hunting small chances to speak or act.";
-      } else if (total === DAILY_GOAL) {
-        remainingLabelEl.textContent = "Goal reached";
-        todayStatusLabelEl.textContent = "Goal reached";
-        statusTextEl.className = "status met";
-        statusTextEl.innerHTML = "<strong>Daily goal reached.</strong> Anything you add now is you going beyond your old self.";
-      } else {
-        const over = total - DAILY_GOAL;
-        remainingLabelEl.textContent = "+" + over + " extra";
-        todayStatusLabelEl.textContent = "You are on fire";
-        statusTextEl.className = "status over";
-        statusTextEl.innerHTML = "<strong>You went above goal.</strong> This is how you build a new standard for yourself.";
-      }
-    }
-
-    function renderTodayList() {
-      const container = document.getElementById("todayList");
-      const todayKey = getTodayKey();
-      const events = getEventsForDate(todayKey).sort((a, b) => b.id - a.id);
-
-      container.innerHTML = "";
-
-      if (events.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "empty-state";
-        empty.textContent = "No reps logged yet today. First rep is the hardest and the most important.";
-        container.appendChild(empty);
-        return;
-      }
-
-      events.forEach(evt => {
-        const row = document.createElement("div");
-        row.className = "event-row";
-
-        const main = document.createElement("div");
-        main.className = "event-main";
-
-        const type = document.createElement("div");
-        type.className = "event-type";
-        type.textContent = LABELS[evt.type] || "Rep";
-
-        main.appendChild(type);
-
-        if (evt.note) {
-          const noteEl = document.createElement("div");
-          noteEl.className = "event-note";
-          noteEl.textContent = evt.note;
-          main.appendChild(noteEl);
-        }
-
-        const meta = document.createElement("div");
-        meta.className = "event-meta";
-        const pts = document.createElement("div");
-        pts.className = "event-points";
-        pts.textContent = "+" + evt.points + " pts";
-        const time = document.createElement("div");
-        time.textContent = evt.time;
-        meta.appendChild(pts);
-        meta.appendChild(time);
-
-        row.appendChild(main);
-        row.appendChild(meta);
-
-        container.appendChild(row);
-      });
-    }
-
-    function renderHistory() {
-      const container = document.getElementById("historyList");
-      const events = loadEvents();
-      const lastDates = getLastNDates(7);
-
-      if (events.length === 0) {
-        container.innerHTML = `
-          <div class="history-row">
-            <span class="history-date">No reps logged yet.</span>
-            <span class="history-points">0 pts</span>
-          </div>
-        `;
-        return;
-      }
-
-      const byDate = {};
-      events.forEach(e => {
-        if (!byDate[e.date]) byDate[e.date] = 0;
-        byDate[e.date] += e.points;
-      });
-
-      container.innerHTML = "";
-      lastDates.forEach(dateKey => {
-        const total = byDate[dateKey] || 0;
-        const row = document.createElement("div");
-        row.className = "history-row";
-
-        const dateLabel = new Date(dateKey).toLocaleDateString(undefined, {
-          weekday: "short",
-          month: "short",
-          day: "numeric"
-        });
-
-        const dateSpan = document.createElement("span");
-        dateSpan.className = "history-date";
-        dateSpan.textContent = dateLabel;
-
-        const ptsSpan = document.createElement("span");
-        ptsSpan.className = "history-points";
-        ptsSpan.textContent = total + " pts";
-
-        if (total >= DAILY_GOAL) {
-          ptsSpan.style.color = "#22c55e";
-        }
-
-        row.appendChild(dateSpan);
-        row.appendChild(ptsSpan);
-        container.appendChild(row);
-      });
+      rotateBelief();
     }
 
     function renderAll() {
-      renderTodaySummary();
-      renderTodayList();
-      renderHistory();
-    }
+      const todayKey = getTodayKey();
+      const todayEvents = loadEvents().filter(e => e.date === todayKey);
+      const total = todayEvents.reduce((s,e)=>s+e.points,0);
 
-    // Event listeners
-    function setupButtons() {
-      const buttons = document.querySelectorAll("button[data-type]");
-      const noteInput = document.getElementById("noteInput");
+      document.getElementById("todayPoints").textContent = total;
+      document.getElementById("progressFill").style.width = Math.min(total/DAILY_GOAL*100,100)+"%";
 
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const type = btn.getAttribute("data-type");
-          const note = noteInput.value.trim();
-          addEvent(type, note);
-          noteInput.value = "";
+      const statusEl = document.getElementById("todayStatusText");
+      if (total === 0) {
+        statusEl.className = "status under";
+        statusEl.innerHTML = "<strong>0 points = you’re still a prisoner.<br>Go make yourself burn right now.</strong>";
+      } else if (total < DAILY_GOAL) {
+        statusEl.className = "status under";
+        statusEl.innerHTML = `<strong>${total} pts — you started.</strong><br>Keep hunting.`;
+      } else if (total === DAILY_GOAL) {
+        statusEl.className = "status met";
+        statusEl.innerHTML = "<strong>GOAL SMASHED.</strong><br>Anything more is extra kills.";
+      } else {
+        statusEl.className = "status over";
+        statusEl.innerHTML = `<strong>+${total - DAILY_GOAL} EXTRA — YOU’RE A FUCKING BEAST.</strong>`;
+      }
+
+      const list = document.getElementById("todayList");
+      list.innerHTML = "";
+      if (todayEvents.length === 0) {
+        list.innerHTML = `<div style="text-align:center;padding:30px;color:#993333;font-size:15px;">No kills today.<br>First one is the hardest — and the one that changes everything.</div>`;
+      } else {
+        todayEvents.sort((a,b)=>b.id-a.id).forEach(e => {
+          list.innerHTML += `
+            <div class="event-row">
+              <div>${LABELS[e.type]}${e.note ? ' – '+e.note : ''}</div>
+              <div><span class="event-points">+${e.points}</span> ${e.time}</div>
+            </div>`;
         });
-      });
+      }
     }
 
-    function setupReset() {
-      const resetButton = document.getElementById("resetButton");
-      resetButton.addEventListener("click", () => {
-        const confirmReset = window.confirm(
-          "This will erase all your points history on this device. Are you sure you want to reset?"
-        );
-        if (!confirmReset) return;
-        localStorage.removeItem("shynessGameEvents");
-        renderAll();
-      });
-    }
-
-    // Initialize
-    document.addEventListener("DOMContentLoaded", () => {
-      setupButtons();
-      setupReset();
-      renderAll();
-      startBeliefRotation();
+    document.querySelectorAll("button[data-type]").forEach(btn => {
+      btn.onclick = () => {
+        const note = document.getElementById("noteInput").value.trim();
+        addEvent(btn.dataset.type, note);
+        document.getElementById("noteInput").value = "";
+      };
     });
 
-    // PWA service worker registration
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("service-worker.js")
-          .catch(err => {
-            console.log("Service worker registration failed", err);
-          });
-      });
-    }
+    renderAll();
   </script>
 </body>
 </html>
