@@ -34,6 +34,7 @@
       border-radius: 20px;
       padding: 20px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+      margin-bottom: 20px;
     }
     h1 {
       font-size: 28px;
@@ -43,6 +44,15 @@
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 4px;
+    }
+    h2 {
+      font-size: 20px;
+      color: #ffffff;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+      text-align: center;
     }
     .tagline {
       text-align: center;
@@ -63,7 +73,39 @@
       width: fit-content;
     }
 
-    /* Clean, readable, but still brutal belief card */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .nav-tab {
+      flex: 1;
+      background: var(--dark);
+      border: 2px solid #660000;
+      color: #ff6b6b;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .nav-tab.active {
+      background: var(--blood);
+      color: #000;
+      border-color: var(--blood);
+    }
+    .nav-tab:hover {
+      transform: translateY(-2px);
+    }
+
+    .view {
+      display: none;
+    }
+    .view.active {
+      display: block;
+    }
+
     .belief-card {
       background: var(--dark);
       border: 1px solid var(--blood);
@@ -76,6 +118,12 @@
       color: #ff9999;
       font-weight: 700;
       box-shadow: 0 4px 20px rgba(255,26,26,0.15);
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .today-summary {
@@ -127,8 +175,14 @@
       font-size: 15px;
       margin: 16px 0;
       resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
     }
     textarea::placeholder { color: #993333; }
+    textarea:focus {
+      outline: none;
+      border-color: var(--blood);
+    }
 
     button {
       cursor: pointer;
@@ -141,7 +195,10 @@
       letter-spacing: 1px;
       min-height: 90px;
       transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
     }
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
     button:active { transform: scale(0.97); }
 
     .btn-action   { background: #222; border: 2px solid #666; color: #fff; }
@@ -155,15 +212,19 @@
       margin-bottom: 4px;
     }
 
-    .today-list {
+    .today-list, .history-list {
       background: var(--dark);
       border: 1px solid #660000;
       border-radius: 14px;
       padding: 10px;
-      max-height: 260px;
+      max-height: 300px;
       overflow-y: auto;
       margin-top: 20px;
     }
+    .today-list::-webkit-scrollbar, .history-list::-webkit-scrollbar { width: 8px; }
+    .today-list::-webkit-scrollbar-track, .history-list::-webkit-scrollbar-track { background: #1a0000; }
+    .today-list::-webkit-scrollbar-thumb, .history-list::-webkit-scrollbar-thumb { background: #660000; border-radius: 4px; }
+
     .event-row {
       padding: 12px 8px;
       border-bottom: 1px solid #330000;
@@ -171,9 +232,15 @@
       justify-content: space-between;
       font-size: 14px;
       color: #ff9999;
+      animation: slideIn 0.3s ease-out;
     }
     .event-row:last-child { border-bottom: none; }
     .event-points { color: var(--gold); font-weight: 900; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
 
     .status {
       text-align: center;
@@ -182,8 +249,90 @@
       margin: 16px 0;
       line-height: 1.4;
     }
+    .status.under { color: var(--muted); }
     .status.met { color: #00ff00; }
     .status.over { color: #ffff00; }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: #993333;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .day-card {
+      background: var(--dark);
+      border: 1px solid #660000;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #660000;
+    }
+    .day-date {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--blood);
+    }
+    .day-total {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--gold);
+    }
+    .day-goal-badge {
+      display: inline-block;
+      background: #00ff00;
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 900;
+      margin-left: 10px;
+    }
+    .day-events {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .day-event {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #ff9999;
+      padding: 6px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 20px 0;
+    }
+    .stats-card {
+      background: var(--dark);
+      border: 1px solid #660000;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stats-number {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      margin: 8px 0;
+    }
+    .stats-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
@@ -193,48 +342,85 @@
       <p class="tagline">Blush or stay a coward forever</p>
       <div class="pill">5-second rule or die</div>
 
-      <div class="belief-card" id="beliefText">
-        Blushing hits like getting caught buck-naked — heart slamming, skin on fire — and that exact moment of total exposure is the most addictive, liberating high I’ve ever felt.
+      <div class="nav-tabs">
+        <div class="nav-tab active" data-view="today">TODAY</div>
+        <div class="nav-tab" data-view="history">HISTORY</div>
       </div>
 
-      <div class="today-summary">
-        <div class="stat-card">
-          <div class="stat-label">Today</div>
-          <div class="stat-value" id="todayPoints">0</div>
+      <!-- TODAY VIEW -->
+      <div id="todayView" class="view active">
+        <div class="belief-card" id="beliefText">
+          Blushing hits like getting caught buck-naked - heart slamming, skin on fire - and that exact moment of total exposure is the most addictive, liberating high I've ever felt.
         </div>
-        <div class="goal-card">
-          <div class="stat-label">War Goal</div>
-          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-          <div style="margin-top:8px; color:#ff6b6b;">10 pts = you showed up</div>
+
+        <div class="today-summary">
+          <div class="stat-card">
+            <div class="stat-label">Today</div>
+            <div class="stat-value" id="todayPoints">0</div>
+          </div>
+          <div class="goal-card">
+            <div class="stat-label">War Goal</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <div style="margin-top:8px; color:#ff6b6b; font-size:13px;">10 pts = you showed up</div>
+          </div>
+        </div>
+
+        <textarea id="noteInput" placeholder="What the hell did you do?" maxlength="200"></textarea>
+
+        <div style="display:grid; gap:12px;">
+          <button class="btn-action" data-type="action">
+            <div class="btn-points">+1</div>
+            <div>I acted before the bitch voice won</div>
+          </button>
+
+          <button class="btn-blush" data-type="blush">
+            <div class="btn-points">+5</div>
+            <div>I blushed hard<br>and still raised my head</div>
+          </button>
+
+          <button class="btn-jackpot" data-type="jackpot">
+            <div class="btn-points">JACKPOT +10</div>
+            <div>I laughed at it:<br>"Yeah I'm shy - what now?"</div>
+          </button>
+        </div>
+
+        <div class="status under" id="todayStatusText">
+          <strong>0 points = you're still a prisoner.<br>Go make yourself burn right now.</strong>
+        </div>
+
+        <div class="today-list" id="todayList">
+          <div class="empty-state">
+            No kills today.<br>First one is the hardest - and the one that changes everything.
+          </div>
         </div>
       </div>
 
-      <textarea id="noteInput" placeholder="What the hell did you do?"></textarea>
+      <!-- HISTORY VIEW -->
+      <div id="historyView" class="view">
+        <div class="stats-grid">
+          <div class="stats-card">
+            <div class="stats-label">Total Days</div>
+            <div class="stats-number" id="totalDays">0</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-label">Days Hit Goal</div>
+            <div class="stats-number" id="daysMetGoal">0</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-label">Total Points</div>
+            <div class="stats-number" id="totalPoints">0</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-label">Best Day</div>
+            <div class="stats-number" id="bestDay">0</div>
+          </div>
+        </div>
 
-      <div style="display:grid; gap:12px;">
-        <button class="btn-action" data-type="action">
-          <div class="btn-points">+1</div>
-          <div>I acted before the bitch voice won</div>
-        </button>
-
-        <button class="btn-blush" data-type="blush">
-          <div class="btn-points">+5</div>
-          <div>I blushed hard<br>and still raised my head</div>
-        </button>
-
-        <button class="btn-jackpot" data-type="jackpot">
-          <div class="btn-points">JACKPOT +10</div>
-          <div>I laughed at it:<br>“Yeah I’m shy — what now?”</div>
-        </button>
-      </div>
-
-      <div class="status under" id="todayStatusText">
-        <strong>0 points = you’re still a prisoner.<br>Go make yourself burn right now.</strong>
-      </div>
-
-      <div class="today-list" id="todayList">
-        <div style="text-align:center; padding:30px; color:#993333; font-size:15px;">
-          No kills today.<br>First one is the hardest — and the one that changes everything.
+        <h2>YOUR WAR LOG</h2>
+        <div class="history-list" id="historyList">
+          <div class="empty-state">
+            No history yet.<br>Start crushing today.
+          </div>
         </div>
       </div>
     </div>
@@ -246,71 +432,194 @@
     const LABELS = { action: "Acted fast", blush: "Blushed + Owned", jackpot: "JACKPOT" };
 
     const BELIEFS = [
-      "Blushing hits like getting caught buck-naked — heart slamming, skin on fire — and that exact moment of total exposure is the most addictive, liberating high I’ve ever felt.",
+      "Blushing hits like getting caught buck-naked - heart slamming, skin on fire - and that exact moment of total exposure is the most addictive, liberating high I've ever felt.",
       "Stand tall through the blush = people smell blood and respect the killer. Hide = you castrate yourself in public.",
-      "The real orgasm is staring the heat dead in the eyes and growling “Come harder.” That second is when I become violently alive.",
-      "Dodging the blush = I murder tomorrow’s me for an audience that forgets me in 5 minutes. Eating it = I forge the man I respect.",
-      "The blush lasts 论证10 seconds. The pride of stepping in burns all day. The regret of pussing out rots in my soul forever."
+      "The real orgasm is staring the heat dead in the eyes and growling "Come harder." That second is when I become violently alive.",
+      "Dodging the blush = I murder tomorrow's me for an audience that forgets me in 5 minutes. Eating it = I forge the man I respect.",
+      "The blush lasts 10 seconds. The pride of stepping in burns all day. The regret of pussing out rots in my soul forever."
     ];
 
     let beliefIndex = 0;
+    let currentView = 'today';
+
     function rotateBelief() {
-      document.getElementById("beliefText").textContent = BELIEFS[beliefIndex];
-      beliefIndex = (beliefIndex + 1) % BELIEFS.length;
+      const el = document.getElementById("beliefText");
+      if (!el) return;
+      el.style.animation = 'none';
+      setTimeout(() => {
+        el.textContent = BELIEFS[beliefIndex];
+        el.style.animation = 'fadeIn 0.8s ease-in';
+        beliefIndex = (beliefIndex + 1) % BELIEFS.length;
+      }, 50);
     }
     setInterval(rotateBelief, 13000);
-    rotateBelief();
 
     function getTodayKey() { return new Date().toISOString().slice(0,10); }
-    function loadEvents() { try { return JSON.parse(localStorage.getItem("shynessGameEvents")||"[]"); } catch(e) { return []; } }
-    function saveEvents(e) { localStorage.setItem("shynessGameEvents", JSON.stringify(e)); }
+    function loadEvents() { 
+      try { 
+        return JSON.parse(localStorage.getItem("shynessGameEvents")||"[]"); 
+      } catch(e) { 
+        return []; 
+      } 
+    }
+    function saveEvents(e) { 
+      localStorage.setItem("shynessGameEvents", JSON.stringify(e)); 
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr + 'T00:00:00');
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      
+      if (dateStr === getTodayKey()) return 'Today';
+      if (dateStr === yesterday.toISOString().slice(0,10)) return 'Yesterday';
+      
+      const options = { month: 'short', day: 'numeric', year: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
 
     function addEvent(type, note) {
       const events = loadEvents();
       const now = new Date();
-      events.push({ id: now.getTime(), date: getTodayKey(), time: now.toTimeString().slice(0,5), type, points: POINTS[type], note: note||"" });
+      events.push({ 
+        id: now.getTime(), 
+        date: getTodayKey(), 
+        time: now.toTimeString().slice(0,5), 
+        type, 
+        points: POINTS[type], 
+        note: note||"" 
+      });
       saveEvents(events);
       renderAll();
       rotateBelief();
     }
 
-    function renderAll() {
+    function renderToday() {
       const todayKey = getTodayKey();
       const todayEvents = loadEvents().filter(e => e.date === todayKey);
       const total = todayEvents.reduce((s,e)=>s+e.points,0);
 
       document.getElementById("todayPoints").textContent = total;
-      document.getElementById("progressFill").style.width = Math.min(total/DAILY_GOAL*100,100)+"%";
+      const progressPercent = Math.min((total/DAILY_GOAL)*100, 100);
+      document.getElementById("progressFill").style.width = progressPercent+"%";
 
       const statusEl = document.getElementById("todayStatusText");
       if (total === 0) {
         statusEl.className = "status under";
-        statusEl.innerHTML = "<strong>0 points = you’re still a prisoner.<br>Go make yourself burn right now.</strong>";
+        statusEl.innerHTML = "<strong>0 points = you're still a prisoner.<br>Go make yourself burn right now.</strong>";
       } else if (total < DAILY_GOAL) {
         statusEl.className = "status under";
-        statusEl.innerHTML = `<strong>${total} pts — you started.</strong><br>Keep hunting.`;
+        statusEl.innerHTML = `<strong>${total} pts - you started.</strong><br>Keep hunting.`;
       } else if (total === DAILY_GOAL) {
         statusEl.className = "status met";
         statusEl.innerHTML = "<strong>GOAL SMASHED.</strong><br>Anything more is extra kills.";
       } else {
         statusEl.className = "status over";
-        statusEl.innerHTML = `<strong>+${total - DAILY_GOAL} EXTRA — YOU’RE A FUCKING BEAST.</strong>`;
+        statusEl.innerHTML = `<strong>+${total - DAILY_GOAL} EXTRA - YOU'RE A FUCKING BEAST.</strong>`;
       }
 
       const list = document.getElementById("todayList");
-      list.innerHTML = "";
       if (todayEvents.length === 0) {
-        list.innerHTML = `<div style="text-align:center;padding:30px;color:#993333;font-size:15px;">No kills today.<br>First one is the hardest — and the one that changes everything.</div>`;
+        list.innerHTML = `<div class="empty-state">No kills today.<br>First one is the hardest - and the one that changes everything.</div>`;
       } else {
-        todayEvents.sort((a,b)=>b.id-a.id).forEach(e => {
-          list.innerHTML += `
+        list.innerHTML = todayEvents
+          .sort((a,b)=>b.id-a.id)
+          .map(e => `
             <div class="event-row">
-              <div>${LABELS[e.type]}${e.note ? ' – '+e.note : ''}</div>
-              <div><span class="event-points">+${e.points}</span> ${e.time}</div>
-            </div>`;
-        });
+              <div><strong>${LABELS[e.type]}</strong>${e.note ? ' - '+e.note : ''}</div>
+              <div><span class="event-points">+${e.points}</span> <span style="color:#993333;">${e.time}</span></div>
+            </div>
+          `).join('');
       }
     }
+
+    function renderHistory() {
+      const events = loadEvents();
+      
+      // Group by date
+      const byDate = {};
+      events.forEach(e => {
+        if (!byDate[e.date]) byDate[e.date] = [];
+        byDate[e.date].push(e);
+      });
+
+      // Calculate stats
+      const dates = Object.keys(byDate).sort().reverse();
+      const totalDays = dates.length;
+      let daysMetGoal = 0;
+      let totalPoints = 0;
+      let bestDay = 0;
+
+      dates.forEach(date => {
+        const dayTotal = byDate[date].reduce((s,e)=>s+e.points,0);
+        totalPoints += dayTotal;
+        if (dayTotal >= DAILY_GOAL) daysMetGoal++;
+        if (dayTotal > bestDay) bestDay = dayTotal;
+      });
+
+      document.getElementById("totalDays").textContent = totalDays;
+      document.getElementById("daysMetGoal").textContent = daysMetGoal;
+      document.getElementById("totalPoints").textContent = totalPoints;
+      document.getElementById("bestDay").textContent = bestDay;
+
+      // Render day cards
+      const historyList = document.getElementById("historyList");
+      if (dates.length === 0) {
+        historyList.innerHTML = `<div class="empty-state">No history yet.<br>Start crushing today.</div>`;
+      } else {
+        historyList.innerHTML = dates.map(date => {
+          const dayEvents = byDate[date];
+          const dayTotal = dayEvents.reduce((s,e)=>s+e.points,0);
+          const metGoal = dayTotal >= DAILY_GOAL;
+          
+          return `
+            <div class="day-card">
+              <div class="day-header">
+                <div>
+                  <span class="day-date">${formatDate(date)}</span>
+                  ${metGoal ? '<span class="day-goal-badge">GOAL MET</span>' : ''}
+                </div>
+                <div class="day-total">${dayTotal} pts</div>
+              </div>
+              <div class="day-events">
+                ${dayEvents.sort((a,b)=>b.id-a.id).map(e => `
+                  <div class="day-event">
+                    <div>${LABELS[e.type]}${e.note ? ' - '+e.note : ''}</div>
+                    <div><span class="event-points">+${e.points}</span> ${e.time}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function renderAll() {
+      renderToday();
+      if (currentView === 'history') {
+        renderHistory();
+      }
+    }
+
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      
+      document.getElementById(view + 'View').classList.add('active');
+      document.querySelector(`[data-view="${view}"]`).classList.add('active');
+      
+      if (view === 'history') {
+        renderHistory();
+      }
+    }
+
+    // Event listeners
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.onclick = () => switchView(tab.dataset.view);
+    });
 
     document.querySelectorAll("button[data-type]").forEach(btn => {
       btn.onclick = () => {
