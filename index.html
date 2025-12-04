@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>FUCK SHYNESS – BLUSH OR DIE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/app-icon.svg">
   <style>
     :root {
       --bg: #0a0000;
@@ -241,6 +245,14 @@
   </div>
 
   <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch((err) => {
+          console.error('Service worker registration failed', err);
+        });
+      });
+    }
+
     const DAILY_GOAL = 10;
     const POINTS = { action: 1, blush: 5, jackpot: 10 };
     const LABELS = { action: "Acted fast", blush: "Blushed + Owned", jackpot: "JACKPOT" };
