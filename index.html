@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FUCK SHYNESS – BLUSH OR DIE</title>
+  <title>FUCK SHYNESS - BLUSH OR DIE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -25,6 +25,7 @@
       letter-spacing: 0.5px;
       display: flex;
       justify-content: center;
+      align-items: center;
       padding: 10px;
     }
     .app { max-width: 480px; width:100%; margin:auto; }
@@ -61,7 +62,6 @@
       margin-bottom: 12px;
     }
     .pill {
-      display: inline-block;
       background: var(--blood);
       color: #000;
       font-weight: 900;
@@ -69,8 +69,8 @@
       padding: 6px 14px;
       border-radius: 30px;
       margin: 0 auto;
-      display: block;
       width: fit-content;
+      text-align: center;
     }
 
     .nav-tabs {
@@ -89,6 +89,8 @@
       font-weight: 800;
       text-align: center;
       transition: all 0.2s;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
     .nav-tab.active {
       background: var(--blood);
@@ -97,6 +99,9 @@
     }
     .nav-tab:hover {
       transform: translateY(-2px);
+    }
+    .nav-tab:active {
+      transform: scale(0.95);
     }
 
     .view {
@@ -197,6 +202,11 @@
       transition: all 0.2s;
       position: relative;
       overflow: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      background: transparent;
+      color: inherit;
     }
     button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
     button:active { transform: scale(0.97); }
@@ -368,17 +378,17 @@
         <textarea id="noteInput" placeholder="What the hell did you do?" maxlength="200"></textarea>
 
         <div style="display:grid; gap:12px;">
-          <button class="btn-action" data-type="action">
+          <button class="btn-action" data-type="action" type="button">
             <div class="btn-points">+1</div>
             <div>I acted before the bitch voice won</div>
           </button>
 
-          <button class="btn-blush" data-type="blush">
+          <button class="btn-blush" data-type="blush" type="button">
             <div class="btn-points">+5</div>
             <div>I blushed hard<br>and still raised my head</div>
           </button>
 
-          <button class="btn-jackpot" data-type="jackpot">
+          <button class="btn-jackpot" data-type="jackpot" type="button">
             <div class="btn-points">JACKPOT +10</div>
             <div>I laughed at it:<br>"Yeah I'm shy - what now?"</div>
           </button>
@@ -434,61 +444,65 @@
     const BELIEFS = [
       "Blushing hits like getting caught buck-naked - heart slamming, skin on fire - and that exact moment of total exposure is the most addictive, liberating high I've ever felt.",
       "Stand tall through the blush = people smell blood and respect the killer. Hide = you castrate yourself in public.",
-      "The real orgasm is staring the heat dead in the eyes and growling "Come harder." That second is when I become violently alive.",
+      "The real orgasm is staring the heat dead in the eyes and growling 'Come harder.' That second is when I become violently alive.",
       "Dodging the blush = I murder tomorrow's me for an audience that forgets me in 5 minutes. Eating it = I forge the man I respect.",
       "The blush lasts 10 seconds. The pride of stepping in burns all day. The regret of pussing out rots in my soul forever."
     ];
 
     let beliefIndex = 0;
-    let currentView = 'today';
+    let currentView = "today";
 
     function rotateBelief() {
       const el = document.getElementById("beliefText");
       if (!el) return;
-      el.style.animation = 'none';
+      el.style.animation = "none";
       setTimeout(() => {
         el.textContent = BELIEFS[beliefIndex];
-        el.style.animation = 'fadeIn 0.8s ease-in';
+        el.style.animation = "fadeIn 0.8s ease-in";
         beliefIndex = (beliefIndex + 1) % BELIEFS.length;
       }, 50);
     }
     setInterval(rotateBelief, 13000);
 
-    function getTodayKey() { return new Date().toISOString().slice(0,10); }
-    function loadEvents() { 
-      try { 
-        return JSON.parse(localStorage.getItem("shynessGameEvents")||"[]"); 
-      } catch(e) { 
-        return []; 
-      } 
+    function getTodayKey() {
+      return new Date().toISOString().slice(0, 10);
     }
-    function saveEvents(e) { 
-      localStorage.setItem("shynessGameEvents", JSON.stringify(e)); 
+
+    function loadEvents() {
+      try {
+        return JSON.parse(localStorage.getItem("shynessGameEvents") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveEvents(events) {
+      localStorage.setItem("shynessGameEvents", JSON.stringify(events));
     }
 
     function formatDate(dateStr) {
-      const date = new Date(dateStr + 'T00:00:00');
+      const date = new Date(dateStr + "T00:00:00");
       const today = new Date();
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
-      
-      if (dateStr === getTodayKey()) return 'Today';
-      if (dateStr === yesterday.toISOString().slice(0,10)) return 'Yesterday';
-      
-      const options = { month: 'short', day: 'numeric', year: 'numeric' };
-      return date.toLocaleDateString('en-US', options);
+
+      if (dateStr === getTodayKey()) return "Today";
+      if (dateStr === yesterday.toISOString().slice(0, 10)) return "Yesterday";
+
+      const options = { month: "short", day: "numeric", year: "numeric" };
+      return date.toLocaleDateString("en-US", options);
     }
 
     function addEvent(type, note) {
       const events = loadEvents();
       const now = new Date();
-      events.push({ 
-        id: now.getTime(), 
-        date: getTodayKey(), 
-        time: now.toTimeString().slice(0,5), 
-        type, 
-        points: POINTS[type], 
-        note: note||"" 
+      events.push({
+        id: now.getTime(),
+        date: getTodayKey(),
+        time: now.toTimeString().slice(0, 5),
+        type,
+        points: POINTS[type],
+        note: note || ""
       });
       saveEvents(events);
       renderAll();
@@ -498,11 +512,11 @@
     function renderToday() {
       const todayKey = getTodayKey();
       const todayEvents = loadEvents().filter(e => e.date === todayKey);
-      const total = todayEvents.reduce((s,e)=>s+e.points,0);
+      const total = todayEvents.reduce((s, e) => s + e.points, 0);
 
       document.getElementById("todayPoints").textContent = total;
-      const progressPercent = Math.min((total/DAILY_GOAL)*100, 100);
-      document.getElementById("progressFill").style.width = progressPercent+"%";
+      const progressPercent = Math.min((total / DAILY_GOAL) * 100, 100);
+      document.getElementById("progressFill").style.width = progressPercent + "%";
 
       const statusEl = document.getElementById("todayStatusText");
       if (total === 0) {
@@ -524,27 +538,28 @@
         list.innerHTML = `<div class="empty-state">No kills today.<br>First one is the hardest - and the one that changes everything.</div>`;
       } else {
         list.innerHTML = todayEvents
-          .sort((a,b)=>b.id-a.id)
-          .map(e => `
+          .sort((a, b) => b.id - a.id)
+          .map(
+            e => `
             <div class="event-row">
-              <div><strong>${LABELS[e.type]}</strong>${e.note ? ' - '+e.note : ''}</div>
+              <div><strong>${LABELS[e.type]}</strong>${e.note ? " - " + e.note : ""}</div>
               <div><span class="event-points">+${e.points}</span> <span style="color:#993333;">${e.time}</span></div>
             </div>
-          `).join('');
+          `
+          )
+          .join("");
       }
     }
 
     function renderHistory() {
       const events = loadEvents();
-      
-      // Group by date
+
       const byDate = {};
       events.forEach(e => {
         if (!byDate[e.date]) byDate[e.date] = [];
         byDate[e.date].push(e);
       });
 
-      // Calculate stats
       const dates = Object.keys(byDate).sort().reverse();
       const totalDays = dates.length;
       let daysMetGoal = 0;
@@ -552,7 +567,7 @@
       let bestDay = 0;
 
       dates.forEach(date => {
-        const dayTotal = byDate[date].reduce((s,e)=>s+e.points,0);
+        const dayTotal = byDate[date].reduce((s, e) => s + e.points, 0);
         totalPoints += dayTotal;
         if (dayTotal >= DAILY_GOAL) daysMetGoal++;
         if (dayTotal > bestDay) bestDay = dayTotal;
@@ -563,70 +578,96 @@
       document.getElementById("totalPoints").textContent = totalPoints;
       document.getElementById("bestDay").textContent = bestDay;
 
-      // Render day cards
       const historyList = document.getElementById("historyList");
       if (dates.length === 0) {
         historyList.innerHTML = `<div class="empty-state">No history yet.<br>Start crushing today.</div>`;
       } else {
-        historyList.innerHTML = dates.map(date => {
-          const dayEvents = byDate[date];
-          const dayTotal = dayEvents.reduce((s,e)=>s+e.points,0);
-          const metGoal = dayTotal >= DAILY_GOAL;
-          
-          return `
+        historyList.innerHTML = dates
+          .map(date => {
+            const dayEvents = byDate[date];
+            const dayTotal = dayEvents.reduce((s, e) => s + e.points, 0);
+            const metGoal = dayTotal >= DAILY_GOAL;
+
+            return `
             <div class="day-card">
               <div class="day-header">
                 <div>
                   <span class="day-date">${formatDate(date)}</span>
-                  ${metGoal ? '<span class="day-goal-badge">GOAL MET</span>' : ''}
+                  ${metGoal ? '<span class="day-goal-badge">GOAL MET</span>' : ""}
                 </div>
                 <div class="day-total">${dayTotal} pts</div>
               </div>
               <div class="day-events">
-                ${dayEvents.sort((a,b)=>b.id-a.id).map(e => `
+                ${dayEvents
+                  .sort((a, b) => b.id - a.id)
+                  .map(
+                    e => `
                   <div class="day-event">
-                    <div>${LABELS[e.type]}${e.note ? ' - '+e.note : ''}</div>
+                    <div>${LABELS[e.type]}${e.note ? " - " + e.note : ""}</div>
                     <div><span class="event-points">+${e.points}</span> ${e.time}</div>
                   </div>
-                `).join('')}
+                `
+                  )
+                  .join("")}
               </div>
             </div>
           `;
-        }).join('');
+          })
+          .join("");
       }
     }
 
     function renderAll() {
       renderToday();
-      if (currentView === 'history') {
+      if (currentView === "history") {
         renderHistory();
       }
     }
 
     function switchView(view) {
       currentView = view;
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      
-      document.getElementById(view + 'View').classList.add('active');
-      document.querySelector(`[data-view="${view}"]`).classList.add('active');
-      
-      if (view === 'history') {
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+
+      document.getElementById(view + "View").classList.add("active");
+      document.querySelector(`[data-view="${view}"]`).classList.add("active");
+
+      if (view === "history") {
         renderHistory();
       }
     }
 
-    // Event listeners
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.onclick = () => switchView(tab.dataset.view);
+    function handleNavTap(view) {
+      switchView(view);
+    }
+
+    function handleAction(type) {
+      const noteInput = document.getElementById("noteInput");
+      const note = noteInput.value.trim();
+      addEvent(type, note);
+      noteInput.value = "";
+    }
+
+    document.querySelectorAll(".nav-tab").forEach(tab => {
+      const view = tab.dataset.view;
+      tab.addEventListener("click", function () {
+        handleNavTap(view);
+      });
+      tab.addEventListener("touchend", function (e) {
+        e.preventDefault();
+        handleNavTap(view);
+      });
     });
 
     document.querySelectorAll("button[data-type]").forEach(btn => {
-      btn.onclick = () => {
-        const note = document.getElementById("noteInput").value.trim();
-        addEvent(btn.dataset.type, note);
-        document.getElementById("noteInput").value = "";
-      };
+      const type = btn.dataset.type;
+      btn.addEventListener("click", function () {
+        handleAction(type);
+      });
+      btn.addEventListener("touchend", function (e) {
+        e.preventDefault();
+        handleAction(type);
+      });
     });
 
     renderAll();
