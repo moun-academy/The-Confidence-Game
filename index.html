@@ -6,129 +6,175 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --bg: #0a0000;
-      --card: #0f0000;
+      --bg: radial-gradient(circle at 20% 20%, rgba(255,64,64,0.1), transparent 25%),
+             radial-gradient(circle at 80% 0%, rgba(255,170,0,0.15), transparent 32%),
+             radial-gradient(circle at 50% 90%, rgba(255,77,0,0.2), transparent 28%),
+             #070303;
+      --card: rgba(12, 3, 3, 0.85);
       --blood: #ff1a1a;
       --fire: #ff4d00;
-      --gold: #ffaa00;
-      --text: #ffffff;
-      --muted: #ff6b6b;
-      --dark: #1a0000;
+      --gold: #ffcc33;
+      --text: #f7f5f5;
+      --muted: #ff7b7b;
+      --dark: #150505;
+      --border: rgba(255, 26, 26, 0.25);
     }
+
     * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
-      background: linear-gradient(135deg, #000000, #1a0000);
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
       font-weight: 600;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.35px;
       display: flex;
       justify-content: center;
-      padding: 10px;
+      padding: 16px;
     }
-    .app { max-width: 480px; width:100%; margin:auto; }
+
+    .app { max-width: 560px; width:100%; margin:auto; }
+
     .card {
+      position: relative;
       background: var(--card);
-      border: 2px solid var(--blood);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.04);
+      overflow: hidden;
     }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,77,0,0.07), rgba(0,0,0,0));
+      pointer-events: none;
+    }
+
     h1 {
-      font-size: 28px;
+      font-size: 30px;
       text-align: center;
       color: #ffffff;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
     .tagline {
       text-align: center;
       font-size: 14px;
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .pill-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
     }
     .pill {
-      display: inline-block;
-      background: var(--blood);
+      background: linear-gradient(135deg, var(--blood), #8b0000);
       color: #000;
       font-weight: 900;
-      font-size: 13px;
-      padding: 6px 14px;
-      border-radius: 30px;
-      margin: 0 auto;
-      display: block;
-      width: fit-content;
+      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      box-shadow: 0 10px 35px rgba(255,26,26,0.25);
+      border: 1px solid rgba(255,255,255,0.06);
+      text-transform: uppercase;
     }
 
-    /* Clean, readable, but still brutal belief card */
+    .panel-title {
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffaeae;
+      margin-bottom: 6px;
+    }
+
     .belief-card {
-      background: var(--dark);
-      border: 1px solid var(--blood);
-      padding: 18px;
+      background: linear-gradient(135deg, rgba(255,26,26,0.06), rgba(0,0,0,0.2));
+      border: 1px solid var(--border);
+      padding: 16px;
       border-radius: 16px;
-      margin: 20px 0;
-      text-align: center;
+      margin: 18px 0;
+      text-align: left;
       font-size: 15px;
-      line-height: 1.5;
-      color: #ff9999;
+      line-height: 1.55;
+      color: #ffb3b3;
       font-weight: 700;
-      box-shadow: 0 4px 20px rgba(255,26,26,0.15);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
     }
 
     .today-summary {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 14px;
-      margin: 20px 0;
+      margin: 18px 0 12px;
     }
     .stat-card, .goal-card {
-      background: var(--dark);
-      border: 1px solid #660000;
+      background: rgba(26,0,0,0.7);
+      border: 1px solid #401010;
       border-radius: 14px;
-      padding: 16px;
+      padding: 14px 16px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::after, .goal-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(255,26,26,0.06), rgba(255,204,51,0.05));
+      pointer-events: none;
     }
     .stat-label {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
       margin-bottom: 6px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
     }
     .stat-value {
-      font-size: 52px;
+      font-size: 50px;
       font-weight: 900;
       color: var(--gold);
       line-height: 1;
+      text-shadow: 0 0 20px rgba(255,204,51,0.35);
     }
     .progress-bar {
       height: 12px;
-      background: #1a0000;
-      border-radius: 6px;
+      background: #210000;
+      border-radius: 8px;
       overflow: hidden;
       margin: 10px 0;
       border: 1px solid #660000;
     }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(to right, var(--fire), var(--blood));
+      background: linear-gradient(90deg, var(--fire), var(--gold));
       width: 0%;
       transition: width 0.5s ease-out;
+      box-shadow: 0 0 20px rgba(255,77,0,0.25);
     }
 
-    textarea {
+    textarea, input[type="date"] {
       width: 100%;
-      background: var(--dark);
-      border: 1px solid #660000;
+      background: rgba(21,5,5,0.9);
+      border: 1px solid #3f0b0b;
       color: #fff;
       padding: 14px;
       border-radius: 12px;
       font-size: 15px;
-      margin: 16px 0;
+      margin: 14px 0 10px;
       resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    textarea::placeholder { color: #993333; }
+    textarea:focus, input[type="date"]:focus { border-color: var(--blood); box-shadow: 0 0 0 3px rgba(255,26,26,0.2); outline: none; }
+    textarea::placeholder { color: #b26565; }
 
     button {
       cursor: pointer;
@@ -144,9 +190,9 @@
     }
     button:active { transform: scale(0.97); }
 
-    .btn-action   { background: #222; border: 2px solid #666; color: #fff; }
-    .btn-blush    { background: #990000; color: #ff9999; border: 2px solid var(--blood); }
-    .btn-jackpot  { background: var(--gold); color: #000; border: 2px solid #ffaa00; }
+    .btn-action   { background: #1d1d1d; border: 1px solid #555; color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .btn-blush    { background: linear-gradient(135deg, #b30000, #6f0000); color: #ffb3b3; border: 1px solid var(--blood); box-shadow: 0 10px 30px rgba(255,26,26,0.35); }
+    .btn-jackpot  { background: linear-gradient(135deg, var(--gold), #d68a00); color: #000; border: 1px solid #d68a00; box-shadow: 0 10px 30px rgba(255,204,51,0.35); }
 
     .btn-points {
       font-size: 20px;
@@ -156,13 +202,14 @@
     }
 
     .today-list {
-      background: var(--dark);
-      border: 1px solid #660000;
+      background: rgba(21,5,5,0.8);
+      border: 1px solid #3f0b0b;
       border-radius: 14px;
       padding: 10px;
       max-height: 260px;
       overflow-y: auto;
-      margin-top: 20px;
+      margin-top: 14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
     }
     .event-row {
       padding: 12px 8px;
@@ -170,10 +217,12 @@
       display: flex;
       justify-content: space-between;
       font-size: 14px;
-      color: #ff9999;
+      color: #ffb6b6;
+      gap: 10px;
     }
     .event-row:last-child { border-bottom: none; }
     .event-points { color: var(--gold); font-weight: 900; }
+    .event-note { color: #f7c7c7; font-size: 13px; opacity: 0.85; }
 
     .status {
       text-align: center;
@@ -182,8 +231,24 @@
       margin: 16px 0;
       line-height: 1.4;
     }
-    .status.met { color: #00ff00; }
-    .status.over { color: #ffff00; }
+    .status.met { color: #00ff7f; }
+    .status.over { color: #fff176; }
+
+    .layout-split { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 640px) { .layout-split { grid-template-columns: 1fr 1fr; } }
+
+    .small-btn {
+      width: 100%;
+      background: #0f0f0f;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
@@ -191,47 +256,66 @@
     <div class="card">
       <h1>FUCK SHYNESS</h1>
       <p class="tagline">Blush or stay a coward forever</p>
-      <div class="pill">5-second rule or die</div>
+      <div class="pill-row">
+        <div class="pill">5-second rule</div>
+        <div class="pill">Record the heat</div>
+        <div class="pill">Own the blush</div>
+      </div>
 
       <div class="belief-card" id="beliefText">
         Blushing hits like getting caught buck-naked — heart slamming, skin on fire — and that exact moment of total exposure is the most addictive, liberating high I’ve ever felt.
       </div>
 
+      <div class="panel-title">Fight log date</div>
+      <input type="date" id="dayPicker">
+
       <div class="today-summary">
         <div class="stat-card">
-          <div class="stat-label">Today</div>
+          <div class="stat-label">Day Score</div>
           <div class="stat-value" id="todayPoints">0</div>
         </div>
         <div class="goal-card">
           <div class="stat-label">War Goal</div>
           <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-          <div style="margin-top:8px; color:#ff6b6b;">10 pts = you showed up</div>
+          <div style="margin-top:8px; color:#ff9f9f;">10 pts = you showed up</div>
         </div>
       </div>
 
-      <textarea id="noteInput" placeholder="What the hell did you do?"></textarea>
+      <div class="layout-split">
+        <div>
+          <div class="panel-title">Add a strike</div>
+          <textarea id="noteInput" placeholder="What did you do? Who felt the heat?"></textarea>
 
-      <div style="display:grid; gap:12px;">
-        <button class="btn-action" data-type="action">
-          <div class="btn-points">+1</div>
-          <div>I acted before the bitch voice won</div>
-        </button>
+          <div style="display:grid; gap:12px;">
+            <button class="btn-action" data-type="action">
+              <div class="btn-points">+1</div>
+              <div>I acted before the bitch voice won</div>
+            </button>
 
-        <button class="btn-blush" data-type="blush">
-          <div class="btn-points">+5</div>
-          <div>I blushed hard<br>and still raised my head</div>
-        </button>
+            <button class="btn-blush" data-type="blush">
+              <div class="btn-points">+5</div>
+              <div>I blushed hard<br>and still raised my head</div>
+            </button>
 
-        <button class="btn-jackpot" data-type="jackpot">
-          <div class="btn-points">JACKPOT +10</div>
-          <div>I laughed at it:<br>“Yeah I’m shy — what now?”</div>
-        </button>
+            <button class="btn-jackpot" data-type="jackpot">
+              <div class="btn-points">JACKPOT +10</div>
+              <div>I laughed at it:<br>“Yeah I’m shy — what now?”</div>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel-title">Daily reflection</div>
+          <textarea id="journalInput" placeholder="Drop the raw story here. This text saves to the selected date."></textarea>
+          <button class="small-btn" id="saveJournal">Save reflection</button>
+        </div>
       </div>
 
       <div class="status under" id="todayStatusText">
         <strong>0 points = you’re still a prisoner.<br>Go make yourself burn right now.</strong>
       </div>
 
+      <div class="panel-title">This day’s entries</div>
       <div class="today-list" id="todayList">
         <div style="text-align:center; padding:30px; color:#993333; font-size:15px;">
           No kills today.<br>First one is the hardest — and the one that changes everything.
@@ -244,13 +328,14 @@
     const DAILY_GOAL = 10;
     const POINTS = { action: 1, blush: 5, jackpot: 10 };
     const LABELS = { action: "Acted fast", blush: "Blushed + Owned", jackpot: "JACKPOT" };
+    const STORAGE_KEYS = { events: "shynessGameEvents", notes: "shynessDailyNotes" };
 
     const BELIEFS = [
       "Blushing hits like getting caught buck-naked — heart slamming, skin on fire — and that exact moment of total exposure is the most addictive, liberating high I’ve ever felt.",
       "Stand tall through the blush = people smell blood and respect the killer. Hide = you castrate yourself in public.",
       "The real orgasm is staring the heat dead in the eyes and growling “Come harder.” That second is when I become violently alive.",
       "Dodging the blush = I murder tomorrow’s me for an audience that forgets me in 5 minutes. Eating it = I forge the man I respect.",
-      "The blush lasts 论证10 seconds. The pride of stepping in burns all day. The regret of pussing out rots in my soul forever."
+      "The blush lasts 论证10 seconds. The pride of stepping in burns all day. The regret of pussing out rots in my soul forever.",
     ];
 
     let beliefIndex = 0;
@@ -261,22 +346,35 @@
     setInterval(rotateBelief, 13000);
     rotateBelief();
 
-    function getTodayKey() { return new Date().toISOString().slice(0,10); }
-    function loadEvents() { try { return JSON.parse(localStorage.getItem("shynessGameEvents")||"[]"); } catch(e) { return []; } }
-    function saveEvents(e) { localStorage.setItem("shynessGameEvents", JSON.stringify(e)); }
+    function getDayKey(date = new Date()) { return date.toISOString().slice(0,10); }
+    function loadEvents() { try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.events)||"[]"); } catch(e) { return []; } }
+    function saveEvents(e) { localStorage.setItem(STORAGE_KEYS.events, JSON.stringify(e)); }
+    function loadNotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.notes)||"{}"); } catch(e) { return {}; } }
+    function saveNotes(obj) { localStorage.setItem(STORAGE_KEYS.notes, JSON.stringify(obj)); }
+
+    function currentDate() {
+      const picker = document.getElementById("dayPicker");
+      return picker?.value || getDayKey();
+    }
 
     function addEvent(type, note) {
       const events = loadEvents();
       const now = new Date();
-      events.push({ id: now.getTime(), date: getTodayKey(), time: now.toTimeString().slice(0,5), type, points: POINTS[type], note: note||"" });
+      const date = currentDate();
+      events.push({ id: now.getTime(), date, time: now.toTimeString().slice(0,5), type, points: POINTS[type], note: note||"" });
       saveEvents(events);
       renderAll();
       rotateBelief();
     }
 
+    function renderJournal(dateKey) {
+      const notes = loadNotes();
+      document.getElementById("journalInput").value = notes[dateKey] || "";
+    }
+
     function renderAll() {
-      const todayKey = getTodayKey();
-      const todayEvents = loadEvents().filter(e => e.date === todayKey);
+      const dayKey = currentDate();
+      const todayEvents = loadEvents().filter(e => e.date === dayKey);
       const total = todayEvents.reduce((s,e)=>s+e.points,0);
 
       document.getElementById("todayPoints").textContent = total;
@@ -300,16 +398,21 @@
       const list = document.getElementById("todayList");
       list.innerHTML = "";
       if (todayEvents.length === 0) {
-        list.innerHTML = `<div style="text-align:center;padding:30px;color:#993333;font-size:15px;">No kills today.<br>First one is the hardest — and the one that changes everything.</div>`;
+        list.innerHTML = `<div style="text-align:center;padding:30px;color:#993333;font-size:15px;">No kills on this day.<br>Pick a date and start the hunt.</div>`;
       } else {
         todayEvents.sort((a,b)=>b.id-a.id).forEach(e => {
           list.innerHTML += `
             <div class="event-row">
-              <div>${LABELS[e.type]}${e.note ? ' – '+e.note : ''}</div>
+              <div>
+                <div>${LABELS[e.type]}</div>
+                ${e.note ? `<div class="event-note">${e.note}</div>` : ""}
+              </div>
               <div><span class="event-points">+${e.points}</span> ${e.time}</div>
             </div>`;
         });
       }
+
+      renderJournal(dayKey);
     }
 
     document.querySelectorAll("button[data-type]").forEach(btn => {
@@ -319,6 +422,20 @@
         document.getElementById("noteInput").value = "";
       };
     });
+
+    document.getElementById("saveJournal").onclick = () => {
+      const dateKey = currentDate();
+      const notes = loadNotes();
+      notes[dateKey] = document.getElementById("journalInput").value.trim();
+      saveNotes(notes);
+      document.getElementById("saveJournal").textContent = "Saved";
+      setTimeout(() => document.getElementById("saveJournal").textContent = "Save reflection", 1200);
+    };
+
+    const picker = document.getElementById("dayPicker");
+    picker.value = getDayKey();
+    picker.max = getDayKey();
+    picker.addEventListener("change", renderAll);
 
     renderAll();
   </script>
