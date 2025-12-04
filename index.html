@@ -347,6 +347,23 @@
       font-size: 12px;
       color: var(--muted);
     }
+
+    .controls-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin: 8px 0 16px;
+    }
+    .btn-reset {
+      background: transparent;
+      border: 2px solid #660000;
+      color: #ff6b6b;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
@@ -379,7 +396,9 @@
           </div>
         </div>
 
-        <textarea id="noteInput" placeholder="What the hell did you do?" maxlength="200"></textarea>
+        <div class="controls-row">
+          <button class="btn-reset" id="resetToday" type="button">Reset Score</button>
+        </div>
 
         <div style="display:grid; gap:12px;">
           <button class="btn-action" data-type="action" type="button">
@@ -646,10 +665,14 @@
     }
 
     function handleAction(type) {
-      const noteInput = document.getElementById("noteInput");
-      const note = noteInput.value.trim();
-      addEvent(type, note);
-      noteInput.value = "";
+      addEvent(type, "");
+    }
+
+    function resetToday() {
+      const todayKey = getTodayKey();
+      const remainingEvents = loadEvents().filter(e => e.date !== todayKey);
+      saveEvents(remainingEvents);
+      renderAll();
     }
 
     document.querySelectorAll(".nav-tab").forEach(tab => {
@@ -672,6 +695,13 @@
         e.preventDefault();
         handleAction(type);
       });
+    });
+
+    const resetBtn = document.getElementById("resetToday");
+    resetBtn.addEventListener("click", resetToday);
+    resetBtn.addEventListener("touchend", function (e) {
+      e.preventDefault();
+      resetToday();
     });
 
     if ("serviceWorker" in navigator) {
