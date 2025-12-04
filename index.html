@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>Blush Game Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PWA additions -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="icon" href="icons/icon-192.png">
 
   <style>
     :root {
@@ -507,7 +511,7 @@
         <div class="section-title">Last 7 days</div>
         <div class="history" id="historyList">
           <div class="history-row">
-            <span class="history-date">No history yet.</span>
+            <span class="history-date">No reps logged yet.</span>
             <span class="history-points">0 pts</span>
           </div>
         </div>
@@ -810,6 +814,17 @@
       renderAll();
       startBeliefRotation();
     });
+
+    // PWA service worker registration
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .catch(err => {
+            console.log("Service worker registration failed", err);
+          });
+      });
+    }
   </script>
 </body>
 </html>
